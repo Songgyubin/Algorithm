@@ -6,7 +6,6 @@ import kotlin.math.min
 private const val HOME = 1
 private const val CHICKEN = 2
 
-private lateinit var arr: Array<IntArray>
 private lateinit var chicken: ArrayList<Pair<Int, Int>>
 private lateinit var home: ArrayList<Pair<Int, Int>>
 private lateinit var visit: BooleanArray
@@ -22,13 +21,11 @@ private fun main() {
     m = s[1]
     chicken = ArrayList()
     home = ArrayList()
-    arr = Array(n) { IntArray(n) }
 //    visited = Array(13) { Visit(Pair(0, 0), false) }
     visit = BooleanArray(13)
     comPareAnswer = Array(m) { Pair(0, 0) }
     for (i in 0 until n) {
         readLine()!!.split(' ').map(String::toInt).forEachIndexed { j, value ->
-            arr[i][j] = value
             if (value == CHICKEN) {
                 chicken.add(Pair(i, j))
             } else if (value == HOME) home.add(Pair(i, j))
