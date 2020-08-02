@@ -13,8 +13,8 @@ private lateinit var visit: BooleanArray
 private lateinit var comPareAnswer: Array<Pair<Int, Int>>
 private var n = 0
 private var m = 0
-private var answer = 0
-private var dis = Int.MAX_VALUE
+private var tmpAnswer = 0
+private var answer = Int.MAX_VALUE
 
 private fun main() {
     val s = readLine()!!.split(' ').map(String::toInt)
@@ -34,23 +34,21 @@ private fun main() {
             } else if (value == HOME) home.add(Pair(i, j))
         }
     }
-    for (i in 1..m) {
         backtracking(0, 0, m)
-    }
-    println(dis)
+    println(answer)
 }
 
 private fun backtracking(count: Int, start: Int,t:Int) {
     if (count == t) {
-        answer = 0
+        tmpAnswer = 0
         home.forEach { h ->
             var tmp = Int.MAX_VALUE
             comPareAnswer.forEach { c ->
                 tmp = min(tmp, (abs(h.first - c.first) + abs(h.second - c.second)))
             }
-            answer += tmp
+            tmpAnswer += tmp
         }
-        dis = min(answer, dis)
+        answer = min(tmpAnswer, answer)
         return
     }
 
