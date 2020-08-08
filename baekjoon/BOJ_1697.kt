@@ -1,38 +1,40 @@
-package baekjoon.bfs
+package bfs
 
 import java.util.*
 
+private var arr = IntArray(100001) { -1 }
 private val go = intArrayOf(1, -1, 2)
-private lateinit var queue: Queue<Int>
-private lateinit var dis: IntArray
 
-private var x = 0
 private fun main() {
+
     val (n, k) = readLine()!!.split(' ').map(String::toInt)
-    queue = LinkedList()
-    dis = IntArray(100001) { -1 }
-    dis[n] = 0
-    queue.add(n)
-    bfs(k)
+    bfs(n, k)
 
 }
 
-private fun bfs(k:Int) {
+private fun bfs(n: Int, k: Int) {
 
-    while (dis[k]==-1) {
-        var curX = queue.peek()
-        queue.remove()
-        for (i in go.indices) {
-            if (i == 0 || i == 1) {
-                x = curX + go[i]
-            } else if (i == 2) {
-                x = curX * go[i]
+    val queue: Queue<Int> = LinkedList()
+    queue.add(n)
+    arr[n] = 0
+    while (queue.isNotEmpty()) {
+        val x = queue.poll()
+
+        for (i in 0 until 3) {
+
+            val curX = if (i == 2) x * go[i]
+            else x + go[i]
+            if (curX >= 0 && curX < arr.size && arr[curX] == -1) {
+                queue.add(curX)
+                arr[curX] = arr[x] + 1
             }
-            if (dis[x] == -1) {
-                queue.add(x)
-                dis[x] = dis[curX] + 1
+            if (curX == k) {
+                println(arr[curX])
+                return
             }
         }
+
+
     }
-    println(dis[k])
+
 }
