@@ -42,13 +42,13 @@ private fun bfs(start: Int, end: Int): Int {
     queue.add(start)
 
     while (queue.isNotEmpty()) {
-        var cur = queue.poll()
-        var first = cur - (cur / 1000 * 1000)
-        var second = cur - ((cur % 1000) - (cur % 100))
-        var third = cur - ((cur % 100) - (cur % 10))
-        var fourth = cur - (cur % 10)
+        val cur = queue.poll()
+        val first = cur - (cur / 1000 * 1000)
+        val second = cur - ((cur % 1000) - (cur % 100))
+        val third = cur - ((cur % 100) - (cur % 10))
+        val fourth = cur - (cur % 10)
 
-        var arr = intArrayOf(first, second, third, fourth)
+        val arr = intArrayOf(first, second, third, fourth)
 
         for (i in arr.indices) {
             var next = 0
