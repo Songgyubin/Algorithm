@@ -1,74 +1,70 @@
-package baekjoon.bfs
+package bfs
 
 import java.util.*
-import kotlin.math.max
 
 
 private val goX = intArrayOf(0, 0, 1, -1)
 private val goY = intArrayOf(1, -1, 0, 0)
 
-private lateinit var arr: Array<CharArray>
-private lateinit var dis: Array<IntArray>
-private lateinit var dis1: Array<IntArray>
+private lateinit var arr: Array<Array<Char>>
+private lateinit var fDist: Array<Array<Int>>
+private lateinit var jDist: Array<Array<Int>>
 private lateinit var queueFire: Queue<Pair<Int, Int>>
 private lateinit var queueJihoon: Queue<Pair<Int, Int>>
 
 private fun main() {
     val (r, c) = readLine()!!.split(' ').map(String::toInt)
-    arr = Array(r) { CharArray(c) }
-    dis = Array(r) { IntArray(c) { -1} }
-    dis1= Array(r) { IntArray(c) { -1 } }
+    arr = Array(r) { Array(c) { ' ' } }
+    fDist = Array(r) { Array(c) { -1 } }
+    jDist = Array(r) { Array(c) { -1 } }
     queueFire = LinkedList()
     queueJihoon = LinkedList()
 
     for (i in 0 until r) {
-        readLine()!!.forEachIndexed { j, c ->
-            arr[i][j] = c
-            if (c == 'F') {
+        readLine()!!.forEachIndexed { j, value ->
+            arr[i][j] = value
+            if (value == 'F') {
                 queueFire.add(Pair(i, j))
-                dis[i][j] = 0
+                fDist[i][j] = 0
             }
-            if (c == 'J') {
+            if (value == 'J') {
                 queueJihoon.add(Pair(i, j))
-                dis1[i][j] = 0
+                jDist[i][j] = 0
             }
         }
     }
-    bfs(r,c)
+    bfs(r, c)
 }
 
 private fun bfs(r: Int, c: Int) {
 
     while (queueFire.isNotEmpty()) {
-        val curX = queueFire.peek().first
-        val curY = queueFire.peek().second
-        queueFire.remove()
-        for (i in goX.indices) {
-            val x = curX + goX[i]
-            val y = curY + goY[i]
-            if (x<0 || x>=r || y <0 || y>=c) continue
-            if (dis[x][y]>=0 || arr[x][y] == '#') continue
-                dis[x][y] = dis[curX][curY] + 1
-                queueFire.add(Pair(x, y))
+        val (fx, fy) = queueFire.poll()
+        for (i in 0 until 4) {
+            val curX = fx + goX[i]
+            val curY = fy + goY[i]
+            if (curX < 0 || curX >= r || curY < 0 || curY >= c) continue
+            if (fDist[curX][curY] >= 0 || arr[curX][curY] == '#') continue
+            fDist[curX][curY] = fDist[fx][fy] + 1
+            queueFire.add(Pair(curX, curY))
         }
     }
-    while (queueJihoon.isNotEmpty()){
-        val curX = queueJihoon.peek().first
-        val curY = queueJihoon.peek().second
-        queueJihoon.remove()
-        for (i in goX.indices){
-            val x = curX+ goX[i]
-            val y = curY + goY[i]
-            if (x<0 || x>=r || y<0 || y>=c){
-                println(dis1[curX][curY]+1)
+    while (queueJihoon.isNotEmpty()) {
+        val (jx,jy) = queueJihoon.poll()
+        for (i in goX.indices) {
+            val curX = jx + goX[i]
+            val curY = jy + goY[i]
+            if (curX < 0 || curX >= r || curY < 0 || curY >= c) {
+                println(jDist[jx][jy] + 1)
                 return
             }
-            if (dis1[x][y] >=0 || arr[x][y] =='#') continue
-            if (dis[x][y] != -1 && dis[x][y] <= dis1[curX][curY]+1) continue
+            if (jDist[curX][curY] >= 0 || arr[curX][curY] == '#') continue
 
-                dis1[x][y] = dis1[curX][curY]+1
-                queueJihoon.add(Pair(x,y))
-                    }
+            if (fDist[curX][curY] ==-1 || jDist[jx][jy]+1 < fDist[curX][curY]) {
+                jDist[curX][curY] = jDist[jx][jy] + 1
+                queueJihoon.add(Pair(curX, curY))
+            }
+        }
     }
     println("IMPOSSIBLE")
 }
