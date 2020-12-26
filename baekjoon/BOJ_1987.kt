@@ -1,47 +1,34 @@
-package dfs
+package boj
 
 import kotlin.math.max
 
-private val goX = intArrayOf(0, 0, 1, -1)
-private val goY = intArrayOf(1, -1, 0, 0)
-
 private lateinit var arr: Array<CharArray>
-private lateinit var visAlpha: BooleanArray
-private var r = 0
-private var c = 0
-private var answer = 1
-private var count = 1
+private lateinit var alphaVis: BooleanArray
+
+private val goX = intArrayOf(1, -1, 0, 0)
+private val goY = intArrayOf(0, 0, 1, -1)
+
+private var answer = 0
+
 private fun main() {
-    val s = readLine()!!.split(' ').map(String::toInt)
-    r = s[0]
-    c = s[1]
+    val (r, c) = readLine()!!.split(' ').map { it.toInt() }
+    alphaVis = BooleanArray(26)
     arr = Array(r) { CharArray(c) }
-    visAlpha = BooleanArray('Z'.toInt() - 'A'.toInt() + 1)
     for (i in 0 until r) {
-        readLine()!!.forEachIndexed { j, c ->
-            arr[i][j] = c
-        }
+        arr[i] = readLine()!!.toCharArray()
     }
-    dfs(0, 0)
+    dfs(r, c, 0, 0, 1)
     println(answer)
 }
 
-private fun dfs(x: Int, y: Int) {
-    visAlpha[arr[x][y].toInt()-'A'.toInt()] = true
-
+private fun dfs(r: Int, c: Int, x: Int, y: Int, count: Int) {
+    alphaVis[arr[x][y] - 'A'] = true
     for (i in 0 until 4) {
-        val curX = x + goX[i]
-        val curY = y + goY[i]
-        if (curX >= 0 && curX < r && curY >= 0 && curY < c) {
-            if (!visAlpha[arr[curX][curY].toInt()-'A'.toInt()]) {
-                count++
-                answer = max(count, answer)
-                dfs(curX, curY)
-            }
-        }
+        val (nextX, nextY) = intArrayOf(x + goX[i], y + goY[i])
+        if (nextX < 0 || nextX >= r || nextY < 0 || nextY >= c) continue
+        if (alphaVis[arr[nextX][nextY] - 'A']) continue
+        dfs(r, c, nextX, nextY, count + 1)
+        alphaVis[arr[nextX][nextY] - 'A'] = false
     }
-    count--
-    visAlpha[arr[x][y].toInt()-'A'.toInt()] = false
+    answer = max(answer, count)
 }
-
-
