@@ -1,7 +1,9 @@
-package greedy
+package boj.greedy
 
-private fun main() {
-
+private fun main(){
+    // AAAA BB
     val s = readLine()!!.replace("XXXX","AAAA").replace("XX","BB")
-    println(if('X' in s) "-1" else s)
+    if (s.contains("X")) println(-1)
+    else println(s)
+
 }
