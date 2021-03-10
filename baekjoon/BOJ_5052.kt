@@ -1,17 +1,20 @@
-package boj.string
-
-import java.io.BufferedReader
-import java.io.InputStreamReader
+package boj.sorting
 
 private fun main() {
-    val br = BufferedReader(InputStreamReader(System.`in`))
-    val t = br.readLine().toInt()
-    loop@for (i in 0 until t) {
-        val n = br.readLine().toInt()
-        val arr = Array(n) { br.readLine() }.sorted()
-        for (j in 1 until arr.size) {
-            if (arr[j - 1].length < arr[j].length) {
-                if (arr[j - 1] == arr[j].substring(0, arr[j - 1].length)){
+    val t = readLine()!!.toInt()
+
+    loop@ for (k in 0 until t) {
+
+        val n = readLine()!!.toInt()
+        var arr = Array<String>(n) { "" }
+        for (i in 0 until n) {
+            arr[i] = readLine()!!
+        }
+        arr.sort()
+
+        for (i in 1 until n) {
+            if (arr[i - 1].length < arr[i].length) {
+                if (arr[i - 1] == arr[i].substring(0, arr[i - 1].length)) {
                     println("NO")
                     continue@loop
                 }
