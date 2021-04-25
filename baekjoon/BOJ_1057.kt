@@ -1,11 +1,11 @@
-package baekjoon.study.simulation
+package boj.math
 
 private fun main() {
-    var (a, b, n) = readLine()!!.split(' ').map(String::toInt).sorted()
+    var (a, b, n) = readLine()!!.split(' ').map { it.toInt() }.sorted()
 
     var answer = 1
 
-    if (a == b || a > n || b > n) {
+    if (a > n || b > n) {
         println("-1")
         return
     }
@@ -21,5 +21,4 @@ private fun main() {
         answer++
     }
     println(answer)
-
 }
